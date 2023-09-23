@@ -9,7 +9,7 @@ interface Props {
   token: string;
 }
 
-export default function Activate({ params }: Props) {
+export default function Activate({ params }:any) {
   const router = useRouter();
   const { uid, token } = params;
   const [isLoading, setisLoading] = useState<boolean>(true);

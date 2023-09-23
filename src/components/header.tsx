@@ -2,9 +2,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
+
 const Header = () => {
   const [status, setStatus] = useState<string>("hidden");
   const [header, setHeader] = useState<string>("bg-transparent");
+
+  const dispatch = useAppDispatch();
+
+  const { isAuthenticate } = useAppSelector((state) => state.auth);
 
   const openMobileMenu = () => {
     setStatus("visible");
@@ -25,6 +31,8 @@ const Header = () => {
     window.addEventListener("scroll", listenScrollEvent);
     return () => window.removeEventListener("scroll", listenScrollEvent);
   }, []);
+
+  console.log(isAuthenticate);
 
   return (
     <>
@@ -99,13 +107,25 @@ const Header = () => {
               Register
             </Link>
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link
-              href="/auth/login/"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              Log in <span aria-hidden="true"></span>
-            </Link>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
+            {isAuthenticate ? (
+              <Link href="/">
+                <Image
+                  className="lg:w-12 lg:h-12 rounded-full border-2 border-blue-600 hover:border-red-500 transition-all"
+                  src="http://127.0.0.1:8000/uploads/img/Asset_4524x-100.jpg"
+                  width={50}
+                  height={50}
+                  alt="text"
+                ></Image>
+              </Link>
+            ) : (
+              <Link
+                href="/auth/login/"
+                className="text-sm font-semibold leading-6 text-gray-900"
+              >
+                Log in <span aria-hidden="true"></span>
+              </Link>
+            )}
           </div>
         </nav>
         <div className={`lg:hidden ${status}`}>

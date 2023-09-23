@@ -6,13 +6,16 @@ import { useRouter } from "next/navigation";
 import { useLoginMutation } from "@/redux/features/authApiSlice";
 import Spinner from "@/components/Spinner";
 import { toast } from "react-toastify";
-
-interface LoginForm {
-  email: string;
-  password: string;
-}
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
+import { setCookies } from "@/actions/setCookies";
+import { setAuth } from "@/redux/features/authSlice";
 
 const page = () => {
+  interface LoginForm {
+    email: string;
+    password: string;
+  }
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [formState, setFormState] = useState<LoginForm>({
     email: "",
@@ -26,12 +29,15 @@ const page = () => {
     e.preventDefault();
     login({ email, password })
       .unwrap()
-      .then(() => {
-        toast.success('Successfully logged in')
+      .then(async (payload: any) => {
+        toast.success(`Successfully logged in`);
+        await setCookies(payload.access, payload.refresh);
+        dispatch(setAuth())
         router.push("/");
       })
-      .catch(() => {
-        toast.error('Something Went wrong')
+      .catch((error: any) => {
+        toast.error(error.data.detail ? error.data.detail : "Something Wrong");
+        console.log(error);
       });
   };
 

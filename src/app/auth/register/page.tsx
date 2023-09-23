@@ -26,6 +26,7 @@ const register = () => {
     password: "",
     re_password: "",
   });
+  const [formErrorData, setformErrorData] = useState<any[]>([]);
   const { first_name, last_name, email, phone_number, password, re_password } =
     FormData;
   const [registerByForm, { isLoading }] = useRegisterMutation();
@@ -34,7 +35,6 @@ const register = () => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
-
   const onSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     registerByForm({
@@ -50,10 +50,10 @@ const register = () => {
         toast.success("Please check your email to verify account.");
         router.push("/auth/login");
       })
-      .catch(() => {
-        toast.error("Failed to register.");
+      .catch((error: any) => {
+        toast.error(`Error in one or more fields`);
+        setformErrorData(error.data);
       });
-      console.log(FormData)
   };
 
   return (
@@ -93,6 +93,9 @@ const register = () => {
                     onChange={formOnChange}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                   {
+                  formErrorData.first_name? (<div className="text-red-600">{formErrorData.first_name}</div>): (<> </>)
+                }
                 </div>
               </div>
 
@@ -114,6 +117,9 @@ const register = () => {
                     onChange={formOnChange}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                   {
+                  formErrorData.last_name? (<div className="text-red-600">{formErrorData.last_name}</div>): (<> </>)
+                }
                 </div>
               </div>
             </div>
@@ -135,6 +141,9 @@ const register = () => {
                   onChange={formOnChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                 {
+                  formErrorData.email? (<div className="text-red-600">{formErrorData.email}</div>): (<> </>)
+                }
               </div>
             </div>
             <div>
@@ -155,6 +164,9 @@ const register = () => {
                   onChange={formOnChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                 {
+                  formErrorData.phone_number? (<div className="text-red-600">{formErrorData.phone_number}</div>): (<> </>)
+                }
               </div>
             </div>
 
@@ -178,6 +190,9 @@ const register = () => {
                   value={password}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                 {
+                  formErrorData.password? (<div className="text-red-600">{formErrorData.password}</div>): (<> </>)
+                }
               </div>
             </div>
 
@@ -195,12 +210,14 @@ const register = () => {
                   id="re_password"
                   name="re_password"
                   type="password"
-                  required
                   autoComplete="re_password"
                   value={re_password}
                   onChange={formOnChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {
+                  formErrorData.re_password? (<div className="text-red-600">{formErrorData.re_password}</div>): (<> </>)
+                }
               </div>
             </div>
 

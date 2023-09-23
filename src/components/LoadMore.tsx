@@ -7,8 +7,8 @@ import { Product } from "@/type";
 
 export function LoadMore() {
   const [data, setData] = useState<Product[]>([]);
-  const [page, setPage] = useState <number>(2);
-  const [productStatus, setProductStatus] = useState <boolean>(true);
+  const [page, setPage] = useState<number>(2);
+  const [productStatus, setProductStatus] = useState<boolean>(true);
 
   const { ref, inView } = useInView();
 
